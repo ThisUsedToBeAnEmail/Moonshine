@@ -25,6 +25,11 @@ sub build_html {
     
     my $container = $div->add_child($self->component->container);
 
+    my $text_area_placeholder = "{&#10;\t&quot;action&quot;:&quot;glyphicon&quot;,&#10;\t&quot;switch&quot;:&quot;search&quot;&#10;}";
+    if ($c->{request}->{env}->{HTTP_USER_AGENT} =~ /firefox/gi) {
+        $text_area_placeholder = '{ &quot;action&quot;:&quot;glyphicon&quot;, &quot;switch&quot;:&quot;search&quot; }';
+    }
+  
     my $form = $container->add_child(
         $self->component->form({
             action => '/display',
@@ -44,6 +49,7 @@ sub build_html {
                             name => 'buildMoonshine',
                             tag => 'textarea',
                             style => 'min-height:150px;',
+                            placeholder => $text_area_placeholder,
                             onkeydown => "if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
                         }
                     ],
