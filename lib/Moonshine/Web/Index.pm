@@ -1,6 +1,7 @@
 package Moonshine::Web::Index;
 
 use parent 'Dancer2::Template::Moonshine::Base';
+use JSON qw/encode_json/;
 
 sub build_html {
     my ($self, $c) = @_;
@@ -30,7 +31,24 @@ sub build_html {
         $text_area_placeholder = '{ &quot;action&quot;:&quot;glyphicon&quot;, &quot;switch&quot;:&quot;search&quot; }';
     }
   
-    my $form = $container->add_child(
+	my $example_data = $self->example_data;
+	my $select_fg = $container->add_child($self->component->form_group({ fields => [] }));
+	my $select = $select_fg->add_child({ 
+		tag => 'select', 
+		class => 'pull-right', 
+		style => 'color:#000; margin-botton:8px;',
+		onchange => "console.log(this); var ta = document.getElementById('buildMoonshine'); ta.value = this.value;", 
+	});
+	$select->add_child({ tag => 'option', data => 'Select an Example', value => '', });
+	for ( @{ $example_data } ) {
+		$select->add_child({
+			tag => 'option',
+			data => $_->{name},
+			value => $_->{moon_struct},	
+		});
+	}	
+    
+	my $form = $container->add_child(
         $self->component->form({
             action => '/display',
             method => 'post',
@@ -42,11 +60,13 @@ sub build_html {
                         {
                             action => 'label',
                             for => 'buildMoonshine',  
+							class => 'pull-left',
                             data => 'Insert your (JSON) data struct below',  
                         },
                         {
                             action => 'input',
                             name => 'buildMoonshine',
+							id => 'buildMoonshine',
                             tag => 'textarea',
                             style => 'min-height:150px;',
                             placeholder => $text_area_placeholder,
@@ -64,6 +84,44 @@ sub build_html {
     );
 
     return $div;
+}
+
+sub example_data {
+	my $jumbotron = encode_json({
+		action => 'jumbotron',
+		children => [
+			{
+				action => 'h1',
+				data   => 'Hello, world!',
+			    style  => 'color:#000',
+            },
+			{
+				action => 'p',
+				data   => 'This is jumbotron',
+				style  => 'color:#000;',
+			},
+			{
+				action => 'button',
+				tag    => 'a',
+				sizing => 'lg',
+				href   => 'http://getbootstrap.com/components/',
+				role   => 'button',
+				data   => 'Learn more',
+				switch => 'primary'
+			},
+		],
+	});
+
+    $jumbotron =~ s/\"/\&quot;/g;
+
+	my @example_data = (
+      	{
+			name => 'Jumbotron',
+			moon_struct => $jumbotron,
+		}
+	);
+	
+	return \@example_data;
 }
 
 1;
