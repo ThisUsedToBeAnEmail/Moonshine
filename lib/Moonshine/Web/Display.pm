@@ -17,6 +17,13 @@ sub build_html {
                 data => 'No "action" found, I was trying to - delete YOUR_INVALID_STRUCT->{action}',            
             }) 
         );
+        $container->add_child(
+            $self->component->input({
+                type => 'button',
+                value => 'Lets try again?',
+                onclick => 'window.history.back()'
+            })
+        );
         return $container;
     }
 

@@ -9,13 +9,14 @@ sub build_html {
 
     my $jumbotron = $div->add_child(
         $self->component->jumbotron({
+            style => 'background: -webkit-linear-gradient(#98F36A, #D8D857); background: -o-linear-gradient(#98F36A, #D8D857); background: -moz-linear-gradient(#98F36A, #D8D857); background: linear-gradient(#98F36A, #D8D857);',
             children => [ 
                 {
                     action => 'h1', 
-                    data => 'Rock God',
+                    data => 'Build Some Moonshine',
                     txt => 'center',
                     children => [
-                        { action => 'glyphicon', switch => 'headphones' } 
+                        { action => 'glyphicon', switch => 'globe' } 
                     ],
                 },
             ],
@@ -36,21 +37,21 @@ sub build_html {
                         {
                             action => 'label',
                             for => 'buildMoonshine',  
-                            data => 'Insert your data struct below',  
+                            data => 'Insert your (JSON) data struct below',  
                         },
                         {
                             action => 'input',
                             name => 'buildMoonshine',
                             tag => 'textarea',
-                            style => 'min-height:200px;',
+                            style => 'min-height:150px;',
                             onkeydown => "if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
                         }
                     ],
                     fields => [], 
                 },
                 {
-                    action => 'submit_button',
-                    class => 'center-block',
+                    action => 'input',
+                    type => 'submit',
                 }
             ],
         })
