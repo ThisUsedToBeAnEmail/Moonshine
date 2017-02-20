@@ -10,7 +10,8 @@ sub build_html {
     my $container = $self->component->container();
 
     # 'action' should probably be 'component'
-    unless (my $action = delete $struct->{action}) {
+    my $action;
+    unless ($action = delete $struct->{action}) {
         $container->add_child(
             $self->component->alert({
                 switch => 'error',
