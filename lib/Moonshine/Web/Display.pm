@@ -10,13 +10,13 @@ sub build_html {
     my $container = $self->component->container();
 
     # 'action' should probably be 'component'
-    unless ( my $action = delete $struct->{action} ) {
+    my $action;
+    unless ( $action = delete $struct->{action} ) {
         $container->add_child(
             $self->component->alert(
                 {
                     switch => 'error',
-                    data =>
-'No "action" found, I was trying to - delete YOUR_INVALID_STRUCT->{action}',
+                    data => 'No "action" found, I was trying to - delete YOUR_INVALID_STRUCT->{action}',
                 }
             )
         );
@@ -39,9 +39,7 @@ sub build_html {
             $self->component->alert(
                 {
                     switch => 'error',
-                    data   => sprintf
-'Your data struct was bad it made Moonshine::Bootstrap::v3 cry - %s',
-                    $bad_struct,
+                    data   => sprintf 'Your data struct was bad it made Moonshine::Bootstrap::v3 cry - %s', $bad_struct,
                 }
             )
         );
